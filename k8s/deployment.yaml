@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: secrets-sentinel
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: secrets-sentinel
+  template:
+    metadata:
+      labels:
+        app: secrets-sentinel
+    spec:
+      containers:
+      - name: app
+        image: ghcr.io/example/secrets-sentinel:latest
+        ports:
+        - containerPort: 8080
+        livenessProbe: { httpGet: { path: /healthz, port: 8080 } }
+        readinessProbe: { httpGet: { path: /healthz, port: 8080 } }
